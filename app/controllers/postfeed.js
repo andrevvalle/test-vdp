@@ -16,5 +16,5 @@ exports.post = (req, res) => {
 
 exports.delete = (req, res) => {
     const params = req.params || {};
-    console.log('Delete =>>>>', data);
+    console.log('Delete =>>>>', params);
 };

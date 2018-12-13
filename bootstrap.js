@@ -1,38 +1,27 @@
 import fs from 'fs';
 import path from 'path';
-import express from 'express';
-import bodyParser from 'body-parser';
-import methodOverride from 'method-override';
-import cors from 'cors';
 import chalk from 'chalk';
 
-import config from './config';
+import config from './config/index';
+import api from './config/server';
+import connectDB from './config/connectDB';
 
-const api = express();
+connectDB.then((db) => {
+	console.log(chalk.blue('DB Connected!!!'));
 
-api.use(cors());
-api.use(methodOverride('X-HTTP-Method'));
-api.use(methodOverride('X-HTTP-Method-Override'));
-api.use(methodOverride('X-Method-Override'));
-api.use(methodOverride('_method'));
-
-api.use(bodyParser.urlencoded({ extended: true }));
-api.use(bodyParser.json());
-
-api.use((err, req, res, next) => {
-	console.log(chalk.red(
-		`err, req, res, next ==>, ${err}`
-	));
-});
-
-api.listen(config.server.port, err => {
-	fs.readdirSync(path.join(__dirname, 'routes')).map(file => {
-		require('./routes/' + file)(api);
+	api.use((err, req, res, next) => {
+		console.log(chalk.red(
+			`err, req, res, next ==>, ${err}`
+		));
 	});
 
-	console.log(chalk.blue(
-		`API is now running on port ${config.server.port} in ${config.env} mode`
-	));
-});
+	api.listen(config.server.port, err => {
+		fs.readdirSync(path.join(__dirname, 'app/routes')).map(file => {
+			require('./app/routes/' + file)(api);
+		});
 
-module.exports = api;
+		console.log(chalk.blue(
+			`API is now running on port ${config.server.port} in ${config.env} mode`
+		));
+	});
+});
