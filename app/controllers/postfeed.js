@@ -13,7 +13,16 @@ const put = (req, res) => {
 
 const post = (req, res) => {
 	const data = req.body || {};
-    PostfeedModel.Post(req.body);
+    const defer = PostfeedModel.Post(data);
+
+    defer.then(data => {
+        res.json(data)
+    });
+
+    defer.catch(err => {
+        res.status(400);
+        res.json({message: err.message});
+    });
 };
 
 const remove = (req, res) => {
