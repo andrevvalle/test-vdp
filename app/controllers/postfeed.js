@@ -1,20 +1,24 @@
-exports.list = (req, res) => {
+import * as PostfeedModel from '../models/postfeed';
+
+const list = (req, res) => {
 	const params = req.params || {};
 	const query = req.query || {};
     console.log('List =>>>>', params, query);
 };
 
-exports.put = (req, res) => {
+const put = (req, res) => {
 	const data = req.body || {};
     console.log('Put =>>>>', data);
 };
 
-exports.post = (req, res) => {
+const post = (req, res) => {
 	const data = req.body || {};
-    console.log('Post =>>>>', data.newpost);
+    PostfeedModel.Post(req.body);
 };
 
-exports.delete = (req, res) => {
+const remove = (req, res) => {
     const params = req.params || {};
     console.log('Delete =>>>>', params);
 };
+
+export { list, put, post, remove }

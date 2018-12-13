@@ -6,7 +6,7 @@ import config from './config/index';
 import api from './config/server';
 import connectDB from './config/connectDB';
 
-connectDB.then((db) => {
+connectDB.then(() => {
 	console.log(chalk.blue('DB Connected!!!'));
 
 	api.use((err, req, res, next) => {
