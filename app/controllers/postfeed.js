@@ -3,12 +3,16 @@ import * as PostfeedModel from '../models/postfeed';
 const list = (req, res) => {
 	const params = req.params || {};
 	const query = req.query || {};
-    console.log('List =>>>>', params, query);
-};
+    const defer = PostfeedModel.GetAll();
 
-const put = (req, res) => {
-	const data = req.body || {};
-    console.log('Put =>>>>', data);
+    defer.then(posts => {
+        res.json(posts);
+    });
+
+    defer.catch(err => {
+        res.status(400);
+        res.json({message: err.message});
+    });
 };
 
 const post = (req, res) => {
@@ -25,9 +29,33 @@ const post = (req, res) => {
     });
 };
 
+const put = (req, res) => {
+    const params = req.params || {};
+    const newData = req.body || {};
+    const defer = PostfeedModel.UpdatePost(params.postId, newData)
+
+    defer.then(data => {
+        res.json(data);
+    });
+
+    defer.catch(err => {
+        res.status(400);
+        res.json({message: err.message});
+    });
+};
+
 const remove = (req, res) => {
     const params = req.params || {};
-    console.log('Delete =>>>>', params);
+    const defer = PostfeedModel.RemovePost(params.postId)
+
+    defer.then(data => {
+        res.json(data);
+    });
+
+    defer.catch(err => {
+        res.status(400);
+        res.json({message: err.message});
+    });
 };
 
 export { list, put, post, remove }
