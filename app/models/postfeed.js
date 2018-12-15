@@ -1,11 +1,15 @@
 import PostFeed from './schemas/postfeed-schema';
 
-export function Post(data) {
+export function CreatePost(data) {
     return new PostFeed(data.newpost).save();
 }
 
-export function GetAll() {
+export function GetPosts() {
     return PostFeed.find();
+}
+
+export function GetPostsById(id) {
+    return PostFeed.findById(id);
 }
 
 export function UpdatePost(id, updateData) {

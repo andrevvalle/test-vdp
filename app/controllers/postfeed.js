@@ -1,9 +1,7 @@
 import * as PostfeedModel from '../models/postfeed';
 
-const list = (req, res) => {
-	const params = req.params || {};
-	const query = req.query || {};
-    const defer = PostfeedModel.GetAll();
+const get = (req, res) => {
+    const defer = PostfeedModel.GetPosts();
 
     defer.then(posts => {
         res.json(posts);
@@ -15,9 +13,9 @@ const list = (req, res) => {
     });
 };
 
-const post = (req, res) => {
+const create = (req, res) => {
 	const data = req.body || {};
-    const defer = PostfeedModel.Post(data);
+    const defer = PostfeedModel.CreatePost(data);
 
     defer.then(data => {
         res.json(data)
@@ -29,7 +27,7 @@ const post = (req, res) => {
     });
 };
 
-const put = (req, res) => {
+const update = (req, res) => {
     const params = req.params || {};
     const newData = req.body || {};
     const defer = PostfeedModel.UpdatePost(params.postId, newData)
@@ -46,6 +44,8 @@ const put = (req, res) => {
 
 const remove = (req, res) => {
     const params = req.params || {};
+    // if (!params.postId) res.status(500);
+    
     const defer = PostfeedModel.RemovePost(params.postId)
 
     defer.then(data => {
@@ -58,4 +58,4 @@ const remove = (req, res) => {
     });
 };
 
-export { list, put, post, remove }
+export { get, update, create, remove }

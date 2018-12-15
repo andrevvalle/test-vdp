@@ -9,10 +9,12 @@ const categorySchema = new Schema({
 const postfeedSchema = new Schema({
     title: {
         type: String,
+        trim: true,
         required: true
     },
     content: {
         type: String,
+        trim: true,
         required: true
     },
     categories: [categorySchema],

@@ -1,8 +1,8 @@
-import { list, put, post, remove } from '../controllers/postfeed';
+import { get, update, create, remove } from '../controllers/postfeed';
 
 module.exports = api => {
-	api.route('/postfeed').get(list);
-	api.route('/postfeed/:postId').put(put);
-	api.route('/postfeed').post(post);
+	api.route('/postfeed').get(get);
+	api.route('/postfeed/:postId').put(update);
+	api.route('/postfeed').post(create);
 	api.route('/postfeed/:postId').delete(remove);
 };
