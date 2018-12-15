@@ -41,8 +41,11 @@
 			<h1>Listagem de posts</h1>
 
 			<div class="card mb-5">
-				<div class="card-header">posts</div>
 				<div class="card-block p-0">
+					<% if( listPosts.length == 0) { %>
+					<p>Nenhum post encontrado!</p>
+					<% } else { %>
+					<div class="card-header">posts</div>
 					<table class="table table-bordered table-sm m-0">
 						<thead class="">
 							<tr>
@@ -54,19 +57,20 @@
 								<th>delete</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="tbodyVue">
 							<% for(var i = 0; i < listPosts.length; i++){ %>
 								<tr>
 									<td><%= listPosts[i]._id %></td>
 									<td><%= listPosts[i].title %></td>
 									<td><%= listPosts[i].content %></td>
 									<td><%= listPosts[i].date %></td>
-									<td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-pencil"></i> </button> </td>
-									<td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+									<td class="text-right"><a href="/painel/editpost/<%= listPosts[i].id %>" class="btn btn-sm btn-danger"><i class="fa fa-pencil"></i> </a> </td>
+									<td class="text-right"><a href="#" data-delete="<%= listPosts[i].id %>" @click="onClickDelete" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </a> </td>
 								</tr>
 							<% } %>
 						</tbody>
 					</table>
+					<% } %>
 				</div>
 			</div>
 		</div>
@@ -75,5 +79,24 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>    
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.21/vue.min.js"></script>
+	<script>
+		new Vue({
+			el: '#tbodyVue',
+			methods: {
+				onClickDelete: function(e) {
+					e.preventDefault();
+					var element = e.currentTarget;
+					
+					axios.delete('/postfeed/' + e.currentTarget.dataset.delete)
+						.then(function(res) {
+							element.parentNode.parentNode.remove();
+							alert('Post excluido com sucesso');
+						});
+				}
+			}
+		})
+	</script>
 </body>
 </html>

@@ -29,6 +29,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/painel/newpost">New Post</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/painel/editpost/<%= post.id %>">Edit Post</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -38,7 +41,7 @@
     
     <main class="jumbotron jumbotron-custom">
         <div class="container">
-            <h1>Crie um novo post</h1>
+            <h1>Página de edição do Post: <%= post.title %></h1>
 
             <br>
             <br>
@@ -112,8 +115,9 @@
         new Vue({
             el: '#registrationForm',
             data: {
-                title: null,
-                content: null
+                id: "<%= post._id %>",
+                title: "<%= post.title %>",
+                content: "<%= post.content %>",
             },
             methods: {
                 submitForm: function(e) {
@@ -121,16 +125,18 @@
                     
                     if(this.title && this.content) {
                         var dataSend = {
-                            "newpost": {
+                            "editPost": {
                                 "title": this.title,
                                 "content": this.content
                             }
                         };
-
-                        axios.post('/postfeed/', dataSend)
+                        axios.put(
+                                '/postfeed/'+ this.id,
+                                dataSend
+                            )
                             .then(function(res){
                                 if (res.status == 200) {
-                                    alert('Post foi criado com sucesso')
+                                    alert('Post atulizado com sucesso')
                                 }
                             })
                             .catch(e => alert('Houve um erro inesperado!', e));
